@@ -31,3 +31,22 @@ exports.getParkGames = async (req, res) => {
     throw error
   }
 }
+
+// Delete park game
+
+exports.deleteParkGame = async (req, res) => {
+  // get the parkID and gameID form req.params
+  const { parkId, gameId } = req.params
+  try {
+    // find the park
+    const park = await Park.findById(parkId)
+
+    //  create new arr that have the game to be deleted
+    park.games = park.games.filter((game) => game._id.toString() !== gameId)
+
+    await park.save()
+    res.status(200).send("Game deleted successfully")
+  } catch (error) {
+    throw error
+  }
+}
