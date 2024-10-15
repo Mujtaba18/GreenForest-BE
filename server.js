@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }))
 
 // parks routes
 const parksRoutes = require("./routes/park")
-app.use("/park", parksRoutes)
+app.use("/parks", parksRoutes)
 //
 
 app.use("/", (req, res) => {

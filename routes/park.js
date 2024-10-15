@@ -11,6 +11,6 @@ router.post("/", parkCtrl.addPark)
 router.get("/", parkCtrl.getAllParks)
 
 // Route to get all parks
-router.get("/parks/details", parkCtrl.getParkGames)
-
+router.get("/games/:parkId", parkCtrl.getParkGames)
+//
 module.exports = router

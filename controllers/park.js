@@ -24,7 +24,8 @@ exports.getAllParks = async (req, res) => {
 
 exports.getParkGames = async (req, res) => {
   try {
-    const parkGames = await Park.findById(req._id)
+    const parkGames = await Park.findById(req.params.parkId) // Corrected parameter
+
     res.send(parkGames)
   } catch (error) {
     throw error
