@@ -1,0 +1,28 @@
+{
+  "name": "greenforest-be",
+  "version": "1.0.0",
+  "description": "Green Forest Back End",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mujtaba18/GreenForest-BE.git"
+  },
+  "author": "Mujtaba, Hussain, Ali, Jaffer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mujtaba18/GreenForest-BE/issues"
+  },
+  "homepage": "https://github.com/Mujtaba18/GreenForest-BE#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.7.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.7",
+    "passport": "^0.7.0"
+  }
+}
