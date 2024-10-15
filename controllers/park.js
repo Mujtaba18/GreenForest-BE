@@ -19,3 +19,14 @@ exports.getAllParks = async (req, res) => {
     throw error
   }
 }
+
+// Get park game
+
+exports.getParkGames = async (req, res) => {
+  try {
+    const parkGames = await Park.findById(req._id)
+    res.send(parkGames)
+  } catch (error) {
+    throw error
+  }
+}
