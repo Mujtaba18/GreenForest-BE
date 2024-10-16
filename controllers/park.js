@@ -68,37 +68,26 @@ exports.postNewPark = async (req, res) => {
   }
   };
 
-  exports.getParkById = async (req, res) => {
-    const { parkId } = req.params;
-  
-    try {
-      const park = await Park.findById(parkId).populate("games"); // Populate games if referenced
-      if (!park) {
-        return res.status(404).json({ message: "Park not found" });
-      }
-  
-      res.status(200).json(park);
-    } catch (error) {
-      res.status(500).json({ message: "Error retrieving park", error: error.message });
-    }
-  };
-
   exports.updatePark = async (req, res) => {
     const { parkId } = req.params;
-    const { park_name, park_location, park_description, park_image, games } = req.body;
+    const { park_name, park_location, park_description, games } = req.body;
   
     try {
-      const updatedPark = await Park.findByIdAndUpdate(
-        parkId,
-        {
-          park_name,
-          park_location,
-          park_description,
-          park_image,
-          games, // Update games array
-        },
-        { new: true, runValidators: true } // Ensure validation is run
-      );
+      const updatedFields = {
+        park_name,
+        park_location,
+        park_description,
+        games,
+      };
+      
+      if (req.file) {
+        updatedFields.park_image = req.file.filename;
+      }
+      
+      const updatedPark = await Park.findByIdAndUpdate(parkId, updatedFields, {
+        new: true,
+        runValidators: true,
+      });
   
       if (!updatedPark) {
         return res.status(404).json({ message: "Park not found" });
@@ -107,6 +96,48 @@ exports.postNewPark = async (req, res) => {
       res.status(200).json(updatedPark);
     } catch (error) {
       res.status(500).json({ message: "Error updating park", error: error.message });
+    }
+  };
+
+  exports.addGameToPark = async (req, res) => {
+    try {
+      const { parkId } = req.params;
+      const park = await Park.findById(parkId);
+  
+      if (!park) {
+        return res.status(404).json({ message: "Park not found" });
+      }
+  
+      const gameData = {
+        game_name: req.body.game_name,
+        game_description: req.body.game_description,
+        game_price: req.body.game_price,
+        total_tickets: req.body.total_tickets,
+        game_image: req.file ? `/uploads/${req.file.filename}` : null,
+      };
+  
+      park.games.push(gameData);
+      await park.save();
+  
+      res.status(201).json(gameData);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  exports.getParkById = async (req, res) => {
+    const { parkId } = req.params;
+  
+    try {
+      const park = await Park.findById(parkId).populate("games"); 
+      console.log("Get Park Data" + park)
+      if (!park) {
+        return res.status(404).json({ message: "Park not found" });
+      }
+  
+      res.status(200).json(park);
+    } catch (error) {
+      res.status(500).json({ message: "Error retrieving park", error: error.message });
     }
   };
   

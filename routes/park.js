@@ -34,7 +34,10 @@ router.post('/', upload.single("park_image"), parkCtrl.postNewPark)
 
 router.get("/:parkId", parkCtrl.getParkById);
 
-router.put('/:parkId', parkCtrl.updatePark);
+router.post("/parks/:parkId/add-game", upload.single("game_image"), parkCtrl.addGameToPark);
+
+router.put('/:parkId', upload.single("park_image"), parkCtrl.updatePark);
+
 
 
 module.exports = router
