@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 // Route to get all parks
 router.get("/", parkCtrl.getAllParks)
 
-// Route to get all parks
+// Route to get parks games
 router.get("/games/:parkId", parkCtrl.getParkGames)
 //
 
@@ -39,5 +39,8 @@ router.post("/parks/:parkId/add-game", upload.single("game_image"), parkCtrl.add
 router.put('/:parkId', upload.single("park_image"), parkCtrl.updatePark);
 
 
+
+// Route to delete parks games
+router.delete("/:parkId/games/:gameId", parkCtrl.deleteParkGame)
 
 module.exports = router
