@@ -32,7 +32,9 @@ router.get("/games/:parkId", parkCtrl.getParkGames)
 
 router.post('/', upload.single("park_image"), parkCtrl.postNewPark)
 
-router.post('/parks/:parkId', parkCtrl.updatePark);
+router.get("/:parkId", parkCtrl.getParkById);
+
+router.put('/:parkId', parkCtrl.updatePark);
 
 
 module.exports = router

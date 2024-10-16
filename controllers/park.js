@@ -68,23 +68,37 @@ exports.postNewPark = async (req, res) => {
   }
   };
 
-  exports.updatePark = async (req, res) => {
+  exports.getParkById = async (req, res) => {
+    const { parkId } = req.params;
+  
     try {
-      const { parkId } = req.params;
-      const { park_name, park_location, park_description } = req.body;
-  
-      let updatedData = {
-        park_name,
-        park_location,
-        park_description,
-      };
-  
-      // If a new image is uploaded, update the image path
-      if (req.file) {
-        updatedData.park_image = filename;
+      const park = await Park.findById(parkId).populate("games"); // Populate games if referenced
+      if (!park) {
+        return res.status(404).json({ message: "Park not found" });
       }
   
-      const updatedPark = await Park.findByIdAndUpdate(parkId, updatedData, { new: true, runValidators: true });
+      res.status(200).json(park);
+    } catch (error) {
+      res.status(500).json({ message: "Error retrieving park", error: error.message });
+    }
+  };
+
+  exports.updatePark = async (req, res) => {
+    const { parkId } = req.params;
+    const { park_name, park_location, park_description, park_image, games } = req.body;
+  
+    try {
+      const updatedPark = await Park.findByIdAndUpdate(
+        parkId,
+        {
+          park_name,
+          park_location,
+          park_description,
+          park_image,
+          games, // Update games array
+        },
+        { new: true, runValidators: true } // Ensure validation is run
+      );
   
       if (!updatedPark) {
         return res.status(404).json({ message: "Park not found" });
@@ -92,8 +106,7 @@ exports.postNewPark = async (req, res) => {
   
       res.status(200).json(updatedPark);
     } catch (error) {
-      console.error("Error updating park:", error);
-      res.status(500).json({ message: "Server error" });
+      res.status(500).json({ message: "Error updating park", error: error.message });
     }
   };
   
